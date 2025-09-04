@@ -1,0 +1,175 @@
+baseline：
+# Dataset paths - maps dataset names to their directories
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set/{competition_train,k562_gwps,rpe1,jurkat,k562,hepg2}.h5"
+
+# Training specifications
+# All cell types in a dataset automatically go into training (excluding zeroshot/fewshot overrides)
+[training]
+replogle_h1 = "train"
+
+# Zeroshot specifications - entire cell types go to val or test
+[zeroshot]
+"replogle_h1.hepg2" = "test"  # baseline设置
+
+
+# Fewshot specifications - explicit perturbation lists
+[fewshot]
+
+自己改的：
+# Dataset paths - maps dataset names to their directories
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set/{competition_train,k562_gwps,rpe1,jurkat,k562,hepg2}.h5"
+
+# Training specifications
+# All cell types in a dataset automatically go into training (excluding zeroshot/fewshot overrides)
+[training]
+replogle_h1 = "train"
+
+# Zeroshot specifications - entire cell types go to val or test
+[zeroshot]
+
+
+# Fewshot specifications - explicit perturbation lists
+[fewshot]
+[fewshot."replogle_h1.competition_train"]      # Configure splits for competition_train cell type
+val = [
+    "TAF13", "FDPS", "HSBP1", "SLC39A6", "SALL4", 
+    "KIF20A", "SDC1", "EPB41L2", "SHPRH", "EPHB4",
+    "ATP6V0B", "ETV4", "SEC62", "NREP", "KDM1A"
+]
+
+# 测试集：高样本量基因（>1000 cells）
+test = [
+    "CALM3", "C1QBP", "WSB2", "OXCT1", "TAZ",
+    "MAP1B", "SMAGP", "IKBKG", "METTL17", "RAF1",
+    "ZNF593", "SLC25A3", "SOX2", "SAFB", "ZNF714",
+    "STAT6", "NDUFB6", "CLDN6", "DLG5", "TMSB10"
+]
+
+似乎采用fewshot和zeroshot混合策略并不好，尝试只使用fewshot
+
+SOTA:
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set"
+
+[training]
+replogle_h1 = "train"
+
+[zeroshot]
+
+[fewshot]
+[fewshot."replogle_h1.ARC_H1"]    
+val = [
+    "MAST2", "PHF14", "SOX2", "OXCT1", "SIN3B", "PHF10", "NREP", "SALL4",
+    "CDCA2", "STAG2", "NDUFB4", "LAD1", "ARID1A", "EID1", "MBD3", "OXA1L",
+    "DDIT4", "ELP3", "GABPA", "SRSF3", "SUSP1", "KRT14", "TCF12"
+]
+test = [
+    "ATP6V0C"
+]
+
+Fold3_SOTA:
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set"
+
+[training]
+replogle_h1 = "train"
+
+[zeroshot]
+
+[fewshot]
+[fewshot."replogle_h1.ARC_H1"]
+val = [
+    "SOX2", "SALL4", "ARID1A", "STAG2", "GABPA", "MBD3", "SRSF3", "ELP3",
+    "DDIT4", "OXA1L", "PHF14", "PHF10", "MAST2", "TCF12", "NREP", "EID1",
+    "CDCA2", "STAG1", "SMARCA4", "SIN3B", "NDUFB4", "KRT14", "LAD1",
+"TCF7L2", "SMC1A", "MED26", "ZNF143", "CUX1", "KMT2D", "NDUFAF5", "TAF13"
+]
+test = ["ATP6V0C"]
+Balanced:
+# Starter TOML – balanced strategy
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set"
+
+[training]
+replogle_h1 = "train"
+
+[zeroshot]
+
+[fewshot]
+[fewshot."replogle_h1.ARC_H1"]
+val = [
+  "MAX",
+  "TAF13",
+  "KDM1A",
+  "STAG2",
+  "GSK3B",
+  "TAZ",
+  "NRAS",
+  "IKBKG",
+  "HMGCR",
+  "SLC25A3",
+  "OXCT1",
+  "HMGB2",
+  "UQCRQ",
+  "COX6C",
+  "UQCRB",
+  "COX4I1",
+  "KIF20A",
+  "KIF1B",
+  "CENPB",
+  "CENPO",
+  "METTL14",
+  "DNAJA3",
+  "METTL17",
+  "C1QBP",
+  "DPH2"
+]
+test = ["ATP6V0C"]
+
+Cross-Context:
+# Starter TOML – cross_context strategy
+[datasets]
+replogle_h1 = "/root/autodl-tmp/BGI/state_competition/competition_support_set"
+
+[training]
+replogle_h1 = "train"
+
+[zeroshot]
+
+[fewshot]
+[fewshot."replogle_h1.ARC_H1"]
+val = [
+  "MAX",
+  "METTL14",
+  "DNAJA3",
+  "METTL17",
+  "TAF13",
+  "C1QBP",
+  "DPH2",
+  "KDM1A",
+  "UQCRQ",
+  "STRAP",
+  "COX6C",
+  "UQCRB",
+  "STAG2",
+  "RNF20",
+  "EPB41L2",
+  "HMGCR",
+  "HTATSF1",
+  "DAXX",
+  "PHF10",
+  "EWSR1",
+  "SSBP1",
+  "GSK3B",
+  "SUPV3L1",
+  "PPP2R3C",
+  "MAT2A"
+]
+test = ["ATP6V0C"]
+
+
+
+
+
