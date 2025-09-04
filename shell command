@@ -1,0 +1,24 @@
+python -m state tx train \
+  data.kwargs.toml_config_path="/root/autodl-tmp/BGI/state_competition/vcc/splits/fold3.toml" \
+  data.kwargs.num_workers=12 \
+  data.kwargs.batch_col="batch_var" \
+  data.kwargs.pert_col="target_gene" \
+  data.kwargs.cell_type_key="cell_type" \
+  data.kwargs.control_pert="non-targeting" \
+data.kwargs.perturbation_features_file="/root/autodl-tmp/BGI/state_competition/competition_support_set/ESM2_pert_features.pt" \
+  training.max_steps=80000 \
+training.val_freq=2000 \
+  training.ckpt_every_n_steps=20000 \
+  model=state_sm \
+  use_wandb=false \
+  output_dir="/root/autodl-tmp/BGI/state_competition/vcc/outputs/fold3" \
+  name="model"
+
+python -m state tx infer \
+  --output "/root/autodl-tmp/BGI/state_competition/vcc/preds/fold3_val/pred.h5ad" \
+  --model_dir "/root/autodl-tmp/BGI/state_competition/vcc/outputs/fold3/model" \
+  --checkpoint "/root/autodl-tmp/BGI/state_competition/vcc/outputs/fold3/model/fold3_40000.ckpt" \
+  --adata "/root/autodl-tmp/BGI/state_competition/VAL_TEMPLATE/competition_val_template.h5ad" \
+  --pert_col "target_gene"
+
+cell-eval prep -i /root/autodl-tmp/BGI/state_competition/vcc/preds/fold3_val/pred.h5ad -g /root/autodl-tmp/BGI/state_competition/vcc/data/competition_support_set/gene_names.csv
